@@ -20,9 +20,7 @@ def fetch_products_from_db():
         cur.execute("SELECT * FROM products;")
 
         products = cur.fetchall()
-
-        for product in products:
-            print(product)
+        return products
 
         # Fetching sales
 def fetch_sales_from_db():
@@ -30,8 +28,7 @@ def fetch_sales_from_db():
 
         sales = cur.fetchall()
 
-        for sale in sales:
-            print(sale)
+        return sales
 
 #inserting data
 
@@ -45,11 +42,11 @@ def insert_sales():
       conn.commit()
       return "sale made"
 
-#insert_products()
-#insert_sales()
+insert_products()
+insert_sales()
 
-#fetch_products_from_db()
-#fetch_sales_from_db()
+fetch_products_from_db()
+fetch_sales_from_db()
 
 
 #task review
@@ -96,11 +93,10 @@ def insert_data(table,columns,values):
       cur.execute(f"insert into {table}({columns}) values{values}")
       conn.commit()
 
-table = 'products'
-columns = "name,buying_price,selling_price,stock_quantity"
-values = ("phone",8000,12000,100)
-insert_data(table,columns,values)
-products = fetch_data('products')
-print("data from last method:\n",products)
+#table = 'products'
+#columns = "name,buying_price,selling_price,stock_quantity"
+#values = ("phone",8000,12000,100)
+#insert_data(table,columns,values)
+#products = fetch_data('products')
+#print("data from last method:\n",products)
 
-      
