@@ -2,6 +2,7 @@ from flask import Flask,render_template,request,redirect,url_for
 from database import fetch_products_from_db
 from database import fetch_sales_from_db
 from database import insert_ps
+from database import insert_sales
 
 
 #instantiate your application - initialization of flask
@@ -35,6 +36,18 @@ def add_products():
 def about_us():
     sales = fetch_sales_from_db()
     return render_template("sales.html",sales = sales)
+
+@app.route('/add_sales',methods=['GET','POST'])
+def add_sales():
+    if request.method == 'POST':
+        sales_id = request.form['s-id']
+        product_id = request.form['p-id']
+        quantity = request.form['quant']
+        created_at = request.form['created']
+
+        new_sale = (sales_id,product_id,quantity,created_at)
+        insert_sales(new_sale)
+
 
 @app.route('/dashboard')
 def dashboard():

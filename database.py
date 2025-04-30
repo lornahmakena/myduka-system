@@ -42,7 +42,7 @@ def insert_sales():
       return "sale made"
 
 #insert_products()
-#insert_sales()
+insert_sales()
 
 fetch_products_from_db()
 fetch_sales_from_db()
@@ -67,11 +67,11 @@ def insert_ps(values):
       cur.execute(insert,values)
       conn.commit()
 
-#product_values = ("watches",500,1000,200)
-#product_values = ("apple",120,150,200)
-#insert_ps(product_values)
-#products = fetch_data('products')
-#print("Fetching data after modified func:\n",products)
+product_values = ("watches",500,1000,200)
+product_values = ("apple",120,150,200)
+insert_ps(product_values)
+products = fetch_data('products')
+print("Fetching data after modified func:\n",products)
 
 #insert products - method 2 still takes values a parameter without placeholders
 #replace with (values) parameter in formatted string
