@@ -1,6 +1,7 @@
-from flask import Flask,render_template
+from flask import Flask,render_template,request,redirect,url_for
 from database import fetch_products_from_db
 from database import fetch_sales_from_db
+from database import insert_ps
 
 
 #instantiate your application - initialization of flask
@@ -9,14 +10,27 @@ app = Flask(__name__)
 #routes
 @app.route('/index')
 def index():
-    name = "Makena"
-    numbers = [1,2,3,4,5]
-    return render_template("index.html",data=name,numlist=numbers)
+    return render_template("index.html")
 
 @app.route('/products')
 def home():
     products = fetch_products_from_db()
     return render_template("products.html",products = products)
+
+@app.route('/add_products',methods=['GET','POST'])
+def add_products():
+    if request.method == 'POST':
+        product_name = request.form['p-name']
+        buying_price = request.form['b-price']
+        selling_price = request.form['s-price']
+        stock_quantity = request.form['quantity']
+
+        new_product = (product_name,buying_price,selling_price,stock_quantity)
+        insert_ps(new_product)
+
+        return redirect(url_for('products'))
+    
+
 
 @app.route('/sales')
 def about_us():
@@ -26,10 +40,6 @@ def about_us():
 @app.route('/dashboard')
 def dashboard():
     return "Dashboard"
-
-@app.route('/contact_us')
-def contact_us():
-    return "Contact Us"
 
 #run your app
 app.run(debug=True)
