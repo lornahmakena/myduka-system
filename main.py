@@ -8,7 +8,7 @@ from database import insert_ps
 app = Flask(__name__)
 
 #routes
-@app.route('/index')
+@app.route('/home')
 def index():
     return render_template("index.html")
 
@@ -31,7 +31,6 @@ def add_products():
         return redirect(url_for('products'))
     
 
-
 @app.route('/sales')
 def about_us():
     sales = fetch_sales_from_db()
@@ -43,4 +42,5 @@ def dashboard():
 
 #run your app
 app.run(debug=True)
+
 
