@@ -51,9 +51,10 @@ def add_sales():
 
 @app.route('/dashboard')
 def dashboard():
-    return "Dashboard"
+    return render_template("dashboard.html")
 
 #run your app
 app.run(debug=True)
+
 
 
