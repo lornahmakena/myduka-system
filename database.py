@@ -41,11 +41,66 @@ def insert_sales():
       conn.commit()
       return "sale made"
 
-#insert_products()
+insert_products()
 insert_sales()
 
 fetch_products_from_db()
 fetch_sales_from_db()
+
+
+def profit_per_product():
+      cur.execute("SELECT products.name,SUM((products.selling_price - products.buying_price) * quantity) AS profit FROM products JOIN sales ON products.id = sales.pid GROUP BY (products.name);")
+      profit_per_product = cur.fetchall()
+      return profit_per_product
+                   
+def profit_per_day():
+       cur.execute("SELECT sales.created_at,SUM((products.selling_price - products.buying_price) * quantity) AS profit FROM  products JOIN  sales ON products.id = sales.pid GROUP BY (sales.created_at);")
+       profit_per_day = cur.fetchall()
+       return profit_per_day
+
+def sales_per_product():
+      cur.execute("SELECT products.name,SUM(products.selling_price * sales.quantity) AS revenue FROM products JOIN sales ON products.id = sales.pid GROUP BY (products.name);")
+      sales_per_product = cur.fetchall()
+      return sales_per_product
+
+def sales_per_day():
+      cur.execute("SELECT sales.created_at,SUM(products.selling_price * sales.quantity) AS revenue FROM products JOIN sales ON products.id = sales.pid GROUP BY (sales.created_at);")
+      sales_per_day = cur.fetchall()
+      return sales_per_day
+
+profit_per_product()
+profit_per_day()
+sales_per_product()
+sales_per_day()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #task review
 def fetch_data(table):
