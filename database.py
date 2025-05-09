@@ -73,7 +73,16 @@ profit_per_day()
 sales_per_product()
 sales_per_day()
 
+def check_user(email):
+      query = "SELECT * FROM users WHERE email = %s"
+      cur.execute(query,(email,))
+      user = cur.fetchone()
+      return user
 
+def add_user(user_details):
+      query = "INSERT INTO users (name, email,phone, password) VALUES (%s, %s, %s, %s)"
+      cur.execute(query,user_details)
+      conn.commit()
 
 
 

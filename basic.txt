@@ -49,3 +49,214 @@ def insert_data(table,columns,values):
 #products = fetch_data('products')
 #print("data from last method:\n",products)
 
+{% extends "base.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+            
+<p>This is the register page</p>            
+
+{% endblock %}
+
+<p>sales per day</p>
+    <p>{{s_day}}</p>
+
+    <p>profit per day</p>
+    <p>{{p_day}}</p>
+
+
+    <div>
+        <canvas id="bar-chart" width="800" height="450"></canvas>
+    </div>
+    <div>
+        <canvas id="line-chart" width="800" height="450"></canvas>
+    </div>
+    <div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    </div>
+
+    <script>
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+                labels: {{product_name | safe}},
+                datasets: [
+                    {
+                        label: "Sales per product",
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                        data: {{p_sales | safe}}
+                    },
+                    {
+                        label: "Profit per product",
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                        data: {{p_profit | safe}}
+                    },
+                ]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Predicted world population (millions) in 2050'
+                }
+            }
+        });
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: {{date | safe}},
+                datasets: [{
+                    data: {{profit | safe}},
+                    label: "Africa",
+                    borderColor: "#3e95cd",
+                    fill: false
+                }, {
+                    data: {{sales | safe}},
+                    label: "Asia",
+                    borderColor: "#8e5ea2",
+                    fill: false
+                }, 
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'World population per region (in millions)'
+                }
+            }
+        });
+
+    </script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="">MyDuka</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                            href="http://127.0.0.1:5000/products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000/sales">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                            href="http://127.0.0.1:5000/dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <p>Sales per day: {{ s_day }}</p>
+    <p>Profit per day: {{ p_day }}</p>
+
+    <div>
+        <canvas id="bar-chart" width="800" height="450"></canvas>
+    </div>
+    <div>
+        <canvas id="line-chart" width="800" height="450"></canvas>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <script>
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+                labels: {{ product_name | tojson }},
+            datasets: [
+            {
+                label: "Sales per product",
+                backgroundColor: "#3e95cd",
+                data: {{ p_sales | tojson }}
+                },
+            {
+                label: "Profit per product",
+                backgroundColor: "#8e5ea2",
+                data: {{ p_profit | tojson }}
+                },
+        ]
+        }
+            options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Sales and Profit per Product'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: {{ date | tojson }},
+            datasets: [
+            {
+                data: {{ p_day | tojson }},
+            label: "Profit per Day",
+            borderColor: "#3e95cd",
+            fill: false
+                },
+            {
+                data: {{ s_day | tojson }},
+            label: "Sales per Day",
+            borderColor: "#8e5ea2",
+            fill: false
+                }
+        ]
+        },
+            options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Daily Profit and Sales'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
